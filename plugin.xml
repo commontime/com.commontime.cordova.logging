@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
         id="com.commontime.cordova.logging"
-        version=“1.0.8”>
+        version=“1.0.9”>
 
   <name>Logging</name>
 
@@ -75,22 +75,22 @@
     <header-file src="src/ios/CocoaLumberjack/DDMultiFormatter.h" target-dir="LoggingPlugin"/>
     <source-file src="src/ios/CocoaLumberjack/libCocoaLumberjack.a" framework="true" target-dir="LoggingPlugin"/>
 
-    <header-file src="src/ios/Objective-Zip/Objective-Zip.h" target-dir="SchemaImportPlugin"/>
-    <header-file src="src/ios/Objective-Zip/Objective-Zip+NSError.h" target-dir="SchemaImportPlugin"/>
-    <header-file src="src/ios/Objective-Zip/OZFileInZipInfo.h" target-dir="SchemaImportPlugin"/>
-    <header-file src="src/ios/Objective-Zip/OZZipCompressionLevel.h" target-dir="SchemaImportPlugin"/>
-    <header-file src="src/ios/Objective-Zip/OZZipException.h" target-dir="SchemaImportPlugin"/>
-    <header-file src="src/ios/Objective-Zip/OZZipFile.h" target-dir="SchemaImportPlugin"/>
-    <header-file src="src/ios/Objective-Zip/OZZipFile+NSError.h" target-dir="SchemaImportPlugin"/>
-    <header-file src="src/ios/Objective-Zip/OZZipFile+Standard.h" target-dir="SchemaImportPlugin"/>
-    <header-file src="src/ios/Objective-Zip/OZZipFileMode.h" target-dir="SchemaImportPlugin"/>
-    <header-file src="src/ios/Objective-Zip/OZZipReadStream.h" target-dir="SchemaImportPlugin"/>
-    <header-file src="src/ios/Objective-Zip/OZZipReadStream+NSError.h" target-dir="SchemaImportPlugin"/>
-    <header-file src="src/ios/Objective-Zip/OZZipReadStream+Standard.h" target-dir="SchemaImportPlugin"/>
-    <header-file src="src/ios/Objective-Zip/OZZipWriteStream.h" target-dir="SchemaImportPlugin"/>
-    <header-file src="src/ios/Objective-Zip/OZZipWriteStream+NSError.h" target-dir="SchemaImportPlugin"/>
-    <header-file src="src/ios/Objective-Zip/OZZipWriteStream+Standard.h" target-dir="SchemaImportPlugin"/>
-    <source-file src="src/ios/Objective-Zip/libObjectiveZip.a" framework="true" target-dir="SchemaImportPlugin"/>
+    <header-file src="src/ios/Objective-Zip/Objective-Zip.h" target-dir="LoggingPlugin"/>
+    <header-file src="src/ios/Objective-Zip/Objective-Zip+NSError.h" target-dir="LoggingPlugin"/>
+    <header-file src="src/ios/Objective-Zip/OZFileInZipInfo.h" target-dir="LoggingPlugin"/>
+    <header-file src="src/ios/Objective-Zip/OZZipCompressionLevel.h" target-dir="LoggingPlugin"/>
+    <header-file src="src/ios/Objective-Zip/OZZipException.h" target-dir="LoggingPlugin"/>
+    <header-file src="src/ios/Objective-Zip/OZZipFile.h" target-dir="LoggingPlugin"/>
+    <header-file src="src/ios/Objective-Zip/OZZipFile+NSError.h" target-dir="LoggingPlugin"/>
+    <header-file src="src/ios/Objective-Zip/OZZipFile+Standard.h" target-dir="LoggingPlugin"/>
+    <header-file src="src/ios/Objective-Zip/OZZipFileMode.h" target-dir="LoggingPlugin"/>
+    <header-file src="src/ios/Objective-Zip/OZZipReadStream.h" target-dir="LoggingPlugin"/>
+    <header-file src="src/ios/Objective-Zip/OZZipReadStream+NSError.h" target-dir="LoggingPlugin"/>
+    <header-file src="src/ios/Objective-Zip/OZZipReadStream+Standard.h" target-dir="LoggingPlugin"/>
+    <header-file src="src/ios/Objective-Zip/OZZipWriteStream.h" target-dir="LoggingPlugin"/>
+    <header-file src="src/ios/Objective-Zip/OZZipWriteStream+NSError.h" target-dir="LoggingPlugin"/>
+    <header-file src="src/ios/Objective-Zip/OZZipWriteStream+Standard.h" target-dir="LoggingPlugin"/>
+    <source-file src="src/ios/Objective-Zip/libObjectiveZip.a" framework="true" target-dir="LoggingPlugin"/>
 
   </platform>
 

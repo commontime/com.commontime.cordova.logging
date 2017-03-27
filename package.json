@@ -1,6 +1,6 @@
 {
   "name": "com.commontime.cordova.logging",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Commontime cordova logging plugin.",
   "cordova": {
     "id": "com.commontime.cordova.logging",
@@ -8,6 +8,10 @@
       "android",
       "ios"
     ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/commontime/com.commontime.cordova.logging.git"
   },
   "keywords": [
     "cordova",

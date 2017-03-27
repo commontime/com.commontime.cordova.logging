@@ -1,0 +1,26 @@
+{
+  "name": "com.commontime.cordova.logging",
+  "version": "1.0.6",
+  "description": "Commontime cordova logging plugin.",
+  "cordova": {
+    "id": "com.commontime.cordova.logging",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "keywords": [
+    "cordova",
+    "commontime",
+    "cordova-android",
+    "log"
+  ],
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=3.0.0"
+    }
+  ],
+  "author": "Commontime Ltd",
+  "license": "MIT"
+}

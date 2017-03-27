@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+        id="com.commontime.cordova.logging"
+        version=“1.0.6”>
+
+  <name>Logging</name>
+
+  <asset src="www/logging.js" target="js/logging.js"/>
+
+  <js-module src="www/logging.js" name="logging">
+    <clobbers target="logging" />
+  </js-module>
+
+  <platform name="android">
+
+    <config-file target="AndroidManifest.xml" parent="/*">           
+      <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    </config-file>
+
+    <config-file target="res/xml/config.xml" parent="/*">
+      <feature name="Logging">
+        <param name="android-package" value="com.commontime.plugin.Logging"/>
+        <param name="onload" value="true" />
+      </feature>
+    </config-file>
+
+    <source-file src="src/android/Logging.java" target-dir="src/com/commontime/plugin/"/>
+    <source-file src="src/android/CustomSizeBasedTriggeringPolicy.java" target-dir="src/com/commontime/plugin/"/>
+    <source-file src="src/android/ZipUtility.java" target-dir="src/com/commontime/plugin/"/>
+    <source-file src="src/android/IOUtils.java" target-dir="src/com/commontime/plugin/"/>
+    <source-file src="src/android/LineIterator.java" target-dir="src/com/commontime/plugin/"/>
+
+    <lib-file src="src/android/libs/logback-android-1.1.1-6.jar" />
+    <lib-file src="src/android/libs/slf4j-api-1.7.21.jar" />
+
+  </platform>   
+
+  <platform name="ios">
+
+    <config-file target="config.xml" parent="/widget">
+      <feature name="Logging">
+        <param name="ios-package" value="Logging" />
+      </feature>
+    </config-file>
+
+    <header-file src="src/ios/Logging.h" target-dir="LoggingPlugin"/>
+    <source-file src="src/ios/Logging.m" target-dir="LoggingPlugin"/>
+    <header-file src="src/ios/ClientLogFileManager.h" target-dir="LoggingPlugin"/>
+    <source-file src="src/ios/ClientLogFileManager.m" target-dir="LoggingPlugin"/>
+    <header-file src="src/ios/DeveloperLogFileManager.h" target-dir="LoggingPlugin"/>
+    <source-file src="src/ios/DeveloperLogFileManager.m" target-dir="LoggingPlugin"/>
+    <header-file src="src/ios/NativeLogFileManager.h" target-dir="LoggingPlugin"/>
+    <source-file src="src/ios/NativeLogFileManager.m" target-dir="LoggingPlugin"/>    
+    <header-file src="src/ios/DeveloperFormatter.h" target-dir="LoggingPlugin"/>
+    <source-file src="src/ios/DeveloperFormatter.m" target-dir="LoggingPlugin"/>
+    <header-file src="src/ios/ClientFormatter.h" target-dir="LoggingPlugin"/>
+    <source-file src="src/ios/ClientFormatter.m" target-dir="LoggingPlugin"/>
+    <header-file src="src/ios/NativeFormatter.h" target-dir="LoggingPlugin"/>
+    <source-file src="src/ios/NativeFormatter.m" target-dir="LoggingPlugin"/>
+    <header-file src="src/ios/CustomLog.h" target-dir="LoggingPlugin"/>
+
+    <header-file src="src/ios/CocoaLumberjack/CocoaLumberjack.h" target-dir="LoggingPlugin"/>
+    <header-file src="src/ios/CocoaLumberjack/DDAbstractDatabaseLogger.h" target-dir="LoggingPlugin"/>
+    <header-file src="src/ios/CocoaLumberjack/DDASLLogCapture.h" target-dir="LoggingPlugin"/>
+    <header-file src="src/ios/CocoaLumberjack/DDASLLogger.h" target-dir="LoggingPlugin"/>
+    <header-file src="src/ios/CocoaLumberjack/DDAssertMacros.h" target-dir="LoggingPlugin"/>
+    <header-file src="src/ios/CocoaLumberjack/DDFileLogger.h" target-dir="LoggingPlugin"/>
+    <header-file src="src/ios/CocoaLumberjack/DDLegacyMacros.h" target-dir="LoggingPlugin"/>
+    <header-file src="src/ios/CocoaLumberjack/DDLog.h" target-dir="LoggingPlugin"/>
+    <header-file src="src/ios/CocoaLumberjack/DDLog+LOGV.h" target-dir="LoggingPlugin"/>
+    <header-file src="src/ios/CocoaLumberjack/DDLogMacros.h" target-dir="LoggingPlugin"/>
+    <header-file src="src/ios/CocoaLumberjack/DDTTYLogger.h" target-dir="LoggingPlugin"/>
+    <header-file src="src/ios/CocoaLumberjack/DDContextFilterLogFormatter.h" target-dir="LoggingPlugin"/>
+    <header-file src="src/ios/CocoaLumberjack/DDDispatchQueueLogFormatter.h" target-dir="LoggingPlugin"/>
+    <header-file src="src/ios/CocoaLumberjack/DDMultiFormatter.h" target-dir="LoggingPlugin"/>
+    <source-file src="src/ios/CocoaLumberjack/libCocoaLumberjack.a" framework="true" target-dir="LoggingPlugin"/>
+
+    <header-file src="src/ios/Objective-Zip/Objective-Zip.h" target-dir="SchemaImportPlugin"/>
+    <header-file src="src/ios/Objective-Zip/Objective-Zip+NSError.h" target-dir="SchemaImportPlugin"/>
+    <header-file src="src/ios/Objective-Zip/OZFileInZipInfo.h" target-dir="SchemaImportPlugin"/>
+    <header-file src="src/ios/Objective-Zip/OZZipCompressionLevel.h" target-dir="SchemaImportPlugin"/>
+    <header-file src="src/ios/Objective-Zip/OZZipException.h" target-dir="SchemaImportPlugin"/>
+    <header-file src="src/ios/Objective-Zip/OZZipFile.h" target-dir="SchemaImportPlugin"/>
+    <header-file src="src/ios/Objective-Zip/OZZipFile+NSError.h" target-dir="SchemaImportPlugin"/>
+    <header-file src="src/ios/Objective-Zip/OZZipFile+Standard.h" target-dir="SchemaImportPlugin"/>
+    <header-file src="src/ios/Objective-Zip/OZZipFileMode.h" target-dir="SchemaImportPlugin"/>
+    <header-file src="src/ios/Objective-Zip/OZZipReadStream.h" target-dir="SchemaImportPlugin"/>
+    <header-file src="src/ios/Objective-Zip/OZZipReadStream+NSError.h" target-dir="SchemaImportPlugin"/>
+    <header-file src="src/ios/Objective-Zip/OZZipReadStream+Standard.h" target-dir="SchemaImportPlugin"/>
+    <header-file src="src/ios/Objective-Zip/OZZipWriteStream.h" target-dir="SchemaImportPlugin"/>
+    <header-file src="src/ios/Objective-Zip/OZZipWriteStream+NSError.h" target-dir="SchemaImportPlugin"/>
+    <header-file src="src/ios/Objective-Zip/OZZipWriteStream+Standard.h" target-dir="SchemaImportPlugin"/>
+    <source-file src="src/ios/Objective-Zip/libObjectiveZip.a" framework="true" target-dir="SchemaImportPlugin"/>
+
+  </platform>
+
+</plugin>

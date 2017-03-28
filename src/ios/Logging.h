@@ -26,5 +26,9 @@
 - (void) disableDestination:(CDVInvokedUrlCommand*)command;
 - (void) isLoggingEnabled:(CDVInvokedUrlCommand*)command;
 - (void) zipLogFiles:(CDVInvokedUrlCommand*)command;
+- (void) logNativeInfo:(NSString*)msg;
+- (void) logNativeDebug:(NSString*)msg;
+- (void) logNativeWarn:(NSString*)msg;
+- (void) logNativeError:(NSString*)msg;
 
 @end

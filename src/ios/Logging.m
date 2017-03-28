@@ -863,6 +863,29 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
     }
 }
 
+- (void) logNativeInfo:(NSString*)msg
+{
+    NSArray *loggerArray = [[NSArray alloc] initWithObjects: NATIVE_DESTINATION, nil];
+    [self logInfoPrivate:msg :loggerArray];
+}
+
+- (void) logNativeDebug:(NSString*)msg;
+{
+    NSArray *loggerArray = [[NSArray alloc] initWithObjects: NATIVE_DESTINATION, nil];
+    [self logDebugPrivate:msg :loggerArray];
+}
+
+- (void) logNativeWarn:(NSString*)msg;
+{
+    NSArray *loggerArray = [[NSArray alloc] initWithObjects: NATIVE_DESTINATION, nil];
+    [self logWarnPrivate:msg :loggerArray];
+}
+
+- (void) logNativeError:(NSString*)msg;
+{
+    NSArray *loggerArray = [[NSArray alloc] initWithObjects: NATIVE_DESTINATION, nil];
+    [self logErrorPrivate:msg :loggerArray];
+}
 
 - (void) logInfoPrivate:(NSString*)msg:(NSArray*)loggerArray
 {

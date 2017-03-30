@@ -19,8 +19,11 @@ module.exports = {
     setRootLogLevel: function (successCallback, errorCallback, level, destination) {
         cordova.exec(successCallback, errorCallback, "Logging", "setRootLogLevel", [level, destination]);
     },
-    getLogFilePaths: function (successCallback, errorCallback, excludeEmptyFiles) {
-        cordova.exec(successCallback, errorCallback, "Logging", "getLogFilePaths", [excludeEmptyFiles]);
+    getRootLogLevel: function (successCallback, errorCallback, destination) {
+        cordova.exec(successCallback, errorCallback, "Logging", "getRootLogLevel", [destination]);
+    },
+    getLogFilePaths: function (successCallback, errorCallback) {
+        cordova.exec(successCallback, errorCallback, "Logging", "getLogFilePaths", []);
     },
     getArchivedLogFilePaths: function (successCallback, errorCallback) {
         cordova.exec(successCallback, errorCallback, "Logging", "getArchivedLogFilePaths", []);

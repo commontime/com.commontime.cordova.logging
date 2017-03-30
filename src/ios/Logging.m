@@ -52,10 +52,10 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
 {
     documentsDirectoryPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     logFileDirectoryPath = [documentsDirectoryPath stringByAppendingPathComponent:@"logs"];
-    loggingEnabled = YES;
-    developerLoggingEnabled = YES;
-    clientLoggingEnabled = YES;
-    nativeLoggingEnabled = YES;
+    loggingEnabled = NO;
+    developerLoggingEnabled = NO;
+    clientLoggingEnabled = NO;
+    nativeLoggingEnabled = NO;
     
     [self setupLoggers];
     
@@ -348,14 +348,14 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
     
     if([self isNilOrEmpty:desiredLevel])
     {
-        CDVPluginResult * pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"no log level specified"];
+        CDVPluginResult * pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"No log level specified"];
         [self.commandDelegate sendPluginResult: pluginResult callbackId:command.callbackId];
         return;
     }
     
     if(destination == nil)
     {
-        CDVPluginResult * pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"no destination specified"];
+        CDVPluginResult * pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"No destination specified"];
         [self.commandDelegate sendPluginResult: pluginResult callbackId:command.callbackId];
         return;
     }
@@ -374,22 +374,43 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
     }
 }
 
+- (void)getRootLogLevel:(CDVInvokedUrlCommand*)command
+{
+    NSString *destination = [command.arguments objectAtIndex:0];
+    
+    if(destination == nil)
+    {
+        CDVPluginResult * pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"No destination specified"];
+        [self.commandDelegate sendPluginResult: pluginResult callbackId:command.callbackId];
+        return;
+    }
+
+    NSString *level = [self getRootLogLevelPrivate:destination];
+    
+    if(level != nil)
+    {
+        CDVPluginResult * pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:level];
+        [self.commandDelegate sendPluginResult: pluginResult callbackId:command.callbackId];
+
+    }
+    else
+    {
+        CDVPluginResult * pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Destination not found"];
+        [self.commandDelegate sendPluginResult: pluginResult callbackId:command.callbackId];
+        return;
+
+    }
+}
+
 - (void)getLogFilePaths:(CDVInvokedUrlCommand*)command
 {
-    BOOL excludeEmptyFiles = NO;
-    
-    if(![[command.arguments objectAtIndex:0] isEqual:[NSNull null]] )
-    {
-        excludeEmptyFiles = [[command.arguments objectAtIndex:0] boolValue];
-    }
-    
-    NSDictionary *paths = [self getLogFilePathsPrivate:excludeEmptyFiles];
+    NSDictionary *paths = [self getLogFilePathsPrivate];
     
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus: CDVCommandStatus_OK messageAsDictionary:paths];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
-- (NSDictionary*)getLogFilePathsPrivate:(BOOL)excludeEmptyFiles
+- (NSDictionary*)getLogFilePathsPrivate
 {
     NSFileManager *manager = [NSFileManager defaultManager];
     
@@ -399,7 +420,7 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
     NSString *clientLoggerFilePath = [(ClientLogFileManager*)logger.logFileManager getLogFilePath];
     NSDictionary *clientFileAttributes = [manager attributesOfItemAtPath:clientLoggerFilePath error:nil];
     unsigned long long clientFileSize = [clientFileAttributes fileSize];
-    if (!excludeEmptyFiles || (excludeEmptyFiles && clientFileAttributes && clientFileSize > 0))
+    if (clientFileAttributes && clientFileSize > 0)
     {
         [paths setValue:clientLoggerFilePath forKey:CLIENT_DESTINATION];
     }
@@ -408,7 +429,7 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
     NSString *developerLoggerFilePath = [(DeveloperLogFileManager*)logger.logFileManager getLogFilePath];
     NSDictionary *developerAttributes = [manager attributesOfItemAtPath:developerLoggerFilePath error:nil];
     unsigned long long developerFileSize = [developerAttributes fileSize];
-    if (!excludeEmptyFiles || (excludeEmptyFiles && developerAttributes && developerFileSize > 0))
+    if (developerAttributes && developerFileSize > 0)
     {
         [paths setValue:developerLoggerFilePath forKey:DEVELOPER_DESTINATION];
     }
@@ -417,7 +438,7 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
     NSString *nativeLoggerFilePath = [(NativeLogFileManager*)logger.logFileManager getLogFilePath];
     NSDictionary *nativeAttributes = [manager attributesOfItemAtPath:nativeLoggerFilePath error:nil];
     unsigned long long nativeFileSize = [nativeAttributes fileSize];
-    if (!excludeEmptyFiles || (excludeEmptyFiles && nativeAttributes && nativeFileSize > 0))
+    if (nativeAttributes && nativeFileSize > 0)
     {
         [paths setValue:nativeLoggerFilePath forKey:NATIVE_DESTINATION];
     }
@@ -507,7 +528,7 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
     
     if(settings == nil)
     {
-        CDVPluginResult * pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"no settings specified"];
+        CDVPluginResult * pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"No settings specified"];
         [self.commandDelegate sendPluginResult: pluginResult callbackId:command.callbackId];
         return;
     }
@@ -540,7 +561,7 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
 
     if(destination == nil)
     {
-        CDVPluginResult * pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"no destination specified"];
+        CDVPluginResult * pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"No destination specified"];
         [self.commandDelegate sendPluginResult: pluginResult callbackId:command.callbackId];
         return;
     }
@@ -557,7 +578,7 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
 
     if(destination == nil)
     {
-        CDVPluginResult * pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"no destination specified"];
+        CDVPluginResult * pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"No destination specified"];
         [self.commandDelegate sendPluginResult: pluginResult callbackId:command.callbackId];
         return;
     }
@@ -576,11 +597,11 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
 
 - (void) isDestinationEnabled:(CDVInvokedUrlCommand*)command;
 {
-    NSString *destination = [command.arguments objectAtIndex:1];
+    NSString *destination = [command.arguments objectAtIndex:0];
     
     if(destination == nil)
     {
-        CDVPluginResult * pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"no destination specified"];
+        CDVPluginResult * pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"No destination specified"];
         [self.commandDelegate sendPluginResult: pluginResult callbackId:command.callbackId];
         return;
     }
@@ -593,7 +614,7 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
 {
     NSMutableArray *filePathsToZip = [[NSMutableArray alloc] init];
     
-    NSDictionary *pathInfo = [self getLogFilePathsPrivate:YES];
+    NSDictionary *pathInfo = [self getLogFilePathsPrivate];
     
     for (NSString *key in pathInfo)
     {
@@ -720,6 +741,24 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
     {
         return NO;
     }
+}
+
+- (NSString*)getRootLogLevelPrivate:(NSString*)destination
+{
+    DDFileLogger *fileLogger = [loggers objectForKey:destination];
+    if([destination caseInsensitiveCompare:DEVELOPER_DESTINATION] == NSOrderedSame)
+    {
+        return [[(DeveloperFormatter*)fileLogger.logFormatter getRootLogLevel] lowercaseString];
+    }
+    else if([destination caseInsensitiveCompare:CLIENT_DESTINATION] == NSOrderedSame)
+    {
+        return [[(ClientFormatter*)fileLogger.logFormatter getRootLogLevel] lowercaseString];
+    }
+    else if([destination caseInsensitiveCompare:NATIVE_DESTINATION] == NSOrderedSame)
+    {
+        return [[(NativeFormatter*)fileLogger.logFormatter getRootLogLevel] lowercaseString];
+    }
+    return nil;
 }
 
 - (void)enableDestinationPrivate:(NSString*)destination
@@ -1047,7 +1086,7 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
     loggers = [[NSMutableDictionary alloc] init];
     
     DDFileLogger *developerFileLogger = [[DDFileLogger alloc] initWithLogFileManager:[[DeveloperLogFileManager alloc] initWithLogsDirectory:[logFileDirectoryPath stringByAppendingPathComponent:DEVELOPER_DESTINATION]]];
-    [developerFileLogger setMaximumFileSize:((1024 * 1024) * 1)];
+    [developerFileLogger setMaximumFileSize:(1024 * 10)];
     [developerFileLogger setRollingFrequency:(0)];
     [developerFileLogger.logFileManager setMaximumNumberOfLogFiles:5];
     DeveloperFormatter *developerFormatter = [[DeveloperFormatter alloc] init];
@@ -1057,7 +1096,7 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
     [DDLog addLogger:developerFileLogger];
     
     DDFileLogger *clientFileLogger = [[DDFileLogger alloc] initWithLogFileManager:[[ClientLogFileManager alloc] initWithLogsDirectory:[logFileDirectoryPath stringByAppendingPathComponent:CLIENT_DESTINATION]]];
-    [clientFileLogger setMaximumFileSize:((1024 * 1024) * 1)];
+    [clientFileLogger setMaximumFileSize:((1024 * 1024) * 5)];
     [clientFileLogger setRollingFrequency:(0)];
     [clientFileLogger.logFileManager setMaximumNumberOfLogFiles:5];
     ClientFormatter *clientFormatter = [[ClientFormatter alloc] init];
@@ -1067,7 +1106,7 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
     [DDLog addLogger:clientFileLogger];
     
     DDFileLogger *nativeFileLogger = [[DDFileLogger alloc] initWithLogFileManager:[[NativeLogFileManager alloc] initWithLogsDirectory:[logFileDirectoryPath stringByAppendingPathComponent:NATIVE_DESTINATION]]];
-    [nativeFileLogger setMaximumFileSize:((1024 * 1024) * 1)];
+    [nativeFileLogger setMaximumFileSize:((1024 * 1024) * 5)];
     [nativeFileLogger setRollingFrequency:(0)];
     [nativeFileLogger.logFileManager setMaximumNumberOfLogFiles:5];
     NativeFormatter *nativeFormatter = [[NativeFormatter alloc] init];

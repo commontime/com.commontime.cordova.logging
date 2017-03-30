@@ -50,17 +50,24 @@ static NSString *const LOG_LEVEL_ERROR = @"ERROR";
     logRootLevel = [self getRootLogLevel:logLevel];
 }
 
-- (void)didAddToLogger:(id <DDLogger>)logger {
+- (NSString*)getRootLogLevel
+{
+    return logRootLevel;
+}
+
+- (void)didAddToLogger:(id <DDLogger>)logger
+{
     loggerCount++;
     NSAssert(loggerCount <= 1, @"This logger isn't thread-safe");
 }
 
-- (void)willRemoveFromLogger:(id <DDLogger>)logger {
+- (void)willRemoveFromLogger:(id <DDLogger>)logger
+{
     loggerCount--;
 }
 
-- (BOOL)isLoglevelHighEnough:(DDLogMessage*)message {
-    
+- (BOOL)isLoglevelHighEnough:(DDLogMessage*)message
+{    
     NSString *messageLogLvel = [self getRootLogLevel:message.level];
     
     if([logRootLevel isEqualToString:LOG_LEVEL_DEBUG])

@@ -15,5 +15,6 @@
 }
 
 - (void) setRootLogLevel:(DDLogLevel*)logLevel;
+- (NSString*)getRootLogLevel;
 
 @end

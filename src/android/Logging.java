@@ -30,9 +30,6 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import org.apache.cordova.*;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -78,10 +75,10 @@ public class Logging extends CordovaPlugin {
     private String developerLogFileStoragePath;
     private String nativeLogFileStoragePath;
 
-    private boolean loggingEnabled = true;
-    private boolean developerLoggingEnabled = true;
-    private boolean clientLoggingEnabled = true;
-    private boolean nativeLoggingEnabled = true;
+    private boolean loggingEnabled = false;
+    private boolean developerLoggingEnabled = false;
+    private boolean clientLoggingEnabled = false;
+    private boolean nativeLoggingEnabled = false;
 
     private HashMap<String, Logger> loggers;
 
@@ -334,13 +331,13 @@ public class Logging extends CordovaPlugin {
 
             if(TextUtils.isEmpty(desiredLevel))
             {
-                callbackContext.error("no log level specified");
+                callbackContext.error("No log level specified");
                 return true;
             }
 
             if(destination == null)
             {
-                callbackContext.error("no destination specified");
+                callbackContext.error("No destination specified");
                 return true;
             }
 
@@ -355,16 +352,30 @@ public class Logging extends CordovaPlugin {
                 callbackContext.error("Unable to set root level");
             }
         }
-        else if(action.equals("getLogFilePaths"))
+        else if(action.equals("getRootLogLevel"))
         {
-            Boolean excludeEmptyFiles = false;
+            String destination = data.getString(0);
 
-            if(data.get(0) instanceof Boolean)
+            if(destination == null)
             {
-                excludeEmptyFiles = data.getBoolean(0);
+                callbackContext.error("No destination specified");
+                return true;
             }
 
-            JSONObject filePaths = getLogFilePaths(excludeEmptyFiles);
+            Logger l = loggers.get(destination);
+
+            if(l != null)
+            {
+                callbackContext.success(l.getLevel().levelStr.toLowerCase());
+            }
+            else
+            {
+                callbackContext.error("Destination not found");
+            }
+        }
+        else if(action.equals("getLogFilePaths"))
+        {
+            JSONObject filePaths = getLogFilePaths();
             callbackContext.success(filePaths);
         }
         else if(action.equals("getArchivedLogFilePaths"))
@@ -438,7 +449,7 @@ public class Logging extends CordovaPlugin {
                     {
                         List<String> filePathsToZip = new ArrayList<String>();
 
-                        JSONObject pathInfo = getLogFilePaths(true);
+                        JSONObject pathInfo = getLogFilePaths();
 
                         Iterator<String> iter = pathInfo.keys();
                         while (iter.hasNext())
@@ -556,6 +567,8 @@ public class Logging extends CordovaPlugin {
             }
 
             enableDestination(destination);
+
+            callbackContext.success();
         }
         else if(action.equals("disableDestination"))
         {
@@ -568,6 +581,8 @@ public class Logging extends CordovaPlugin {
             }
 
             disableDestination(destination);
+
+            callbackContext.success();
         }
         else if(action.equals("isLoggingEnabled"))
         {
@@ -591,7 +606,7 @@ public class Logging extends CordovaPlugin {
         return true;
     }
 
-    private JSONObject getLogFilePaths(Boolean excludeEmptyFiles) throws JSONException
+    private JSONObject getLogFilePaths() throws JSONException
     {
         JSONObject paths = new JSONObject();
 
@@ -600,7 +615,7 @@ public class Logging extends CordovaPlugin {
         {
             if(file.getName().equals(DEVELOPER_LOG_FILE_NAME))
             {
-                if (!excludeEmptyFiles || excludeEmptyFiles && file.length() > 0)
+                if (file.length() > 0)
                 {
                     paths.put(DEVELOPER_DESTINATION, file.getAbsolutePath());
                 }
@@ -612,7 +627,7 @@ public class Logging extends CordovaPlugin {
         {
             if(file.getName().equals(CLIENT_LOG_FILE_NAME))
             {
-                if (!excludeEmptyFiles || excludeEmptyFiles && file.length() > 0)
+                if (file.length() > 0)
                 {
                     paths.put(CLIENT_DESTINATION, file.getAbsolutePath());
                 }
@@ -624,7 +639,7 @@ public class Logging extends CordovaPlugin {
         {
             if(file.getName().equals(NATIVE_LOG_FILE_NAME))
             {
-                if (!excludeEmptyFiles || excludeEmptyFiles && file.length() > 0)
+                if (file.length() > 0)
                 {
                     paths.put(NATIVE_DESTINATION, file.getAbsolutePath());
                 }

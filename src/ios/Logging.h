@@ -15,6 +15,9 @@
 - (void) logDebug:(CDVInvokedUrlCommand*)command;
 - (void) logWarn:(CDVInvokedUrlCommand*)command;
 - (void) logError:(CDVInvokedUrlCommand*)command;
+- (void) logMessages:(CDVInvokedUrlCommand *)command;
+- (void) setRootLogLevel:(CDVInvokedUrlCommand*)command;
+- (void) getRootLogLevel:(CDVInvokedUrlCommand*)command;
 - (void) getLogFilePaths:(CDVInvokedUrlCommand*)command;
 - (void) makeFilesPublic:(CDVInvokedUrlCommand*)command;
 - (void) removePublicFiles:(CDVInvokedUrlCommand*)command;

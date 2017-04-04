@@ -1086,7 +1086,7 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
     loggers = [[NSMutableDictionary alloc] init];
     
     DDFileLogger *developerFileLogger = [[DDFileLogger alloc] initWithLogFileManager:[[DeveloperLogFileManager alloc] initWithLogsDirectory:[logFileDirectoryPath stringByAppendingPathComponent:DEVELOPER_DESTINATION]]];
-    [developerFileLogger setMaximumFileSize:(1024 * 10)];
+    [developerFileLogger setMaximumFileSize:(1000 * 1000)];
     [developerFileLogger setRollingFrequency:(0)];
     [developerFileLogger.logFileManager setMaximumNumberOfLogFiles:5];
     DeveloperFormatter *developerFormatter = [[DeveloperFormatter alloc] init];
@@ -1096,7 +1096,7 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
     [DDLog addLogger:developerFileLogger];
     
     DDFileLogger *clientFileLogger = [[DDFileLogger alloc] initWithLogFileManager:[[ClientLogFileManager alloc] initWithLogsDirectory:[logFileDirectoryPath stringByAppendingPathComponent:CLIENT_DESTINATION]]];
-    [clientFileLogger setMaximumFileSize:((1024 * 1024) * 5)];
+    [clientFileLogger setMaximumFileSize:(1000 * 1000)];
     [clientFileLogger setRollingFrequency:(0)];
     [clientFileLogger.logFileManager setMaximumNumberOfLogFiles:5];
     ClientFormatter *clientFormatter = [[ClientFormatter alloc] init];
@@ -1106,7 +1106,7 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
     [DDLog addLogger:clientFileLogger];
     
     DDFileLogger *nativeFileLogger = [[DDFileLogger alloc] initWithLogFileManager:[[NativeLogFileManager alloc] initWithLogsDirectory:[logFileDirectoryPath stringByAppendingPathComponent:NATIVE_DESTINATION]]];
-    [nativeFileLogger setMaximumFileSize:((1024 * 1024) * 5)];
+    [nativeFileLogger setMaximumFileSize:(1000 * 1000];
     [nativeFileLogger setRollingFrequency:(0)];
     [nativeFileLogger.logFileManager setMaximumNumberOfLogFiles:5];
     NativeFormatter *nativeFormatter = [[NativeFormatter alloc] init];

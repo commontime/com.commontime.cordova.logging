@@ -1023,7 +1023,7 @@ public class Logging extends CordovaPlugin {
 
         CustomSizeBasedTriggeringPolicy developerTriggeringPolicy = new CustomSizeBasedTriggeringPolicy();
         developerTriggeringPolicy.setContext(lc);
-        developerTriggeringPolicy.setMaxFileSize("10KB");
+        developerTriggeringPolicy.setMaxFileSize("1MB");
         developerTriggeringPolicy.start();
 
         developerFileAppender.setEncoder(developerEncoder);
@@ -1063,7 +1063,7 @@ public class Logging extends CordovaPlugin {
 
         CustomSizeBasedTriggeringPolicy clientTriggeringPolicy = new CustomSizeBasedTriggeringPolicy();
         clientTriggeringPolicy.setContext(lc);
-        clientTriggeringPolicy.setMaxFileSize("5MB");
+        clientTriggeringPolicy.setMaxFileSize("1MB");
         clientTriggeringPolicy.start();
 
         clientFileAppender.setEncoder(clientEncoder);
@@ -1103,7 +1103,7 @@ public class Logging extends CordovaPlugin {
 
         CustomSizeBasedTriggeringPolicy nativeTriggeringPolicy = new CustomSizeBasedTriggeringPolicy();
         nativeTriggeringPolicy.setContext(lc);
-        nativeTriggeringPolicy.setMaxFileSize("5MB");
+        nativeTriggeringPolicy.setMaxFileSize("1MB");
         nativeTriggeringPolicy.start();
 
         nativeFileAppender.setEncoder(nativeEncoder);

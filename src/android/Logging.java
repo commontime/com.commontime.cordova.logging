@@ -39,12 +39,12 @@ public class Logging extends CordovaPlugin {
     static final String LOGGING_DISABLED = "Logging is disabled";
 
     static final String CLIENT_LOG_FILE_NAME = "client.log";
-    static final String DEVELOPER_LOG_FILE_NAME = "developer.log";
+    static final String APP_LOG_FILE_NAME = "app.log";
     static final String NATIVE_LOG_FILE_NAME = "native.log";
     static final String LOGS_ZIP_FOLDER_NAME = "logs.zip";
 
     static final String CLIENT_DESTINATION = "client";
-    static final String DEVELOPER_DESTINATION = "developer";
+    static final String APP_DESTINATION = "app";
     static final String NATIVE_DESTINATION = "native";
 
     static final String LOG_LEVEL_OFF = "off";
@@ -55,15 +55,15 @@ public class Logging extends CordovaPlugin {
 
     static final String LOGGING_ENABLED_KEY = "loggingEnabled";
     static final String CLIENT_LOGGING_ENABLED_KEY = "clientLoggingEnabled";
-    static final String DEVELOPER_LOGGING_ENABLED_KEY = "developerLoggingEnabled";
+    static final String APP_LOGGING_ENABLED_KEY = "appLoggingEnabled";
     static final String NATIVE_LOGGING_ENABLED_KEY = "nativeLoggingEnabled";
     static final String CLIENT_ROOT_LOG_LEVEL_KEY = "clientRootLogLevel";
-    static final String DEVELOPER_ROOT_LOG_LEVEL_KEY = "developerRootLogLevel";
+    static final String APP_ROOT_LOG_LEVEL_KEY = "appRootLogLevel";
     static final String NATIVE_ROOT_LOG_LEVEL_KEY = "nativeRootLogLevel";
     static final String CLIENT_MAX_FILE_SIZE_KEY = "clientMaxFileSize";
     static final String CLIENT_MAX_NUMBER_OF_LOG_FILES_KEY = "clientMaxNumberOfLogFiles";
-    static final String DEVELOPER_MAX_FILE_SIZE_KEY = "developerMaxFileSize";
-    static final String DEVELOPER_MAX_NUMBER_OF_LOG_FILES_KEY = "developerMaxNumberOfLogFiles";
+    static final String APP_MAX_FILE_SIZE_KEY = "appMaxFileSize";
+    static final String APP_MAX_NUMBER_OF_LOG_FILES_KEY = "appMaxNumberOfLogFiles";
     static final String NATIVE_MAX_FILE_SIZE_KEY = "nativeMaxFileSize";
     static final String NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = "nativeMaxNumberOfLogFiles";
 
@@ -72,11 +72,11 @@ public class Logging extends CordovaPlugin {
     private String logFileStorageLocation;
     private String publicFolderPath;
     private String clientLogFileStoragePath;
-    private String developerLogFileStoragePath;
+    private String appLogFileStoragePath;
     private String nativeLogFileStoragePath;
 
     private boolean loggingEnabled = false;
-    private boolean developerLoggingEnabled = false;
+    private boolean appLoggingEnabled = false;
     private boolean clientLoggingEnabled = false;
     private boolean nativeLoggingEnabled = false;
 
@@ -94,18 +94,18 @@ public class Logging extends CordovaPlugin {
         publicFolderPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Infinity Logs";
         logFileStorageLocation = cordova.getActivity().getFilesDir() + "/logs/";
         clientLogFileStoragePath = logFileStorageLocation + "client/";
-        developerLogFileStoragePath = logFileStorageLocation + "developer/";
+        appLogFileStoragePath = logFileStorageLocation + "app/";
         nativeLogFileStoragePath = logFileStorageLocation + "native/";
 
         createLoggerMap();
 
         String clientRootLogLevel;
-        String developerRootLogLevel;
+        String appRootLogLevel;
         String nativeRootLogLevel;
         long clientMaxFileSize;
         int clientMaxNumberOfLogFiles;
-        long developerMaxFileSize;
-        int developerMaxNumberOfLogFiles;
+        long appMaxFileSize;
+        int appMaxNumberOfLogFiles;
         long nativeMaxFileSize;
         int nativeMaxNumberOfLogFiles;
 
@@ -114,14 +114,14 @@ public class Logging extends CordovaPlugin {
             loggingEnabled = preferences.getBoolean(LOGGING_ENABLED_KEY, false);
 
             clientRootLogLevel = preferences.getString(CLIENT_ROOT_LOG_LEVEL_KEY, null);
-            developerRootLogLevel = preferences.getString(DEVELOPER_ROOT_LOG_LEVEL_KEY, null);
+            appRootLogLevel = preferences.getString(APP_ROOT_LOG_LEVEL_KEY, null);
             nativeRootLogLevel = preferences.getString(NATIVE_ROOT_LOG_LEVEL_KEY, null);
 
             clientMaxFileSize = preferences.getInteger(CLIENT_MAX_FILE_SIZE_KEY, 0);
             clientMaxNumberOfLogFiles = preferences.getInteger(CLIENT_MAX_NUMBER_OF_LOG_FILES_KEY, 0);
 
-            developerMaxFileSize = preferences.getInteger(DEVELOPER_MAX_FILE_SIZE_KEY, 0);
-            developerMaxNumberOfLogFiles = preferences.getInteger(DEVELOPER_MAX_NUMBER_OF_LOG_FILES_KEY, 0);
+            appMaxFileSize = preferences.getInteger(APP_MAX_FILE_SIZE_KEY, 0);
+            appMaxNumberOfLogFiles = preferences.getInteger(APP_MAX_NUMBER_OF_LOG_FILES_KEY, 0);
 
             nativeMaxFileSize = preferences.getInteger(NATIVE_MAX_FILE_SIZE_KEY, 0);
             nativeMaxNumberOfLogFiles = preferences.getInteger(NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY, 0);
@@ -129,19 +129,19 @@ public class Logging extends CordovaPlugin {
         else
         {
             loggingEnabled = getBooleanFromPrefs(LOGGING_ENABLED_KEY);
-            developerLoggingEnabled = getBooleanFromPrefs(DEVELOPER_LOGGING_ENABLED_KEY);
+            appLoggingEnabled = getBooleanFromPrefs(APP_LOGGING_ENABLED_KEY);
             clientLoggingEnabled = getBooleanFromPrefs(CLIENT_LOGGING_ENABLED_KEY);
             nativeLoggingEnabled = getBooleanFromPrefs(NATIVE_LOGGING_ENABLED_KEY);
 
             clientRootLogLevel = getStringFromPrefs(CLIENT_ROOT_LOG_LEVEL_KEY);
-            developerRootLogLevel = getStringFromPrefs(DEVELOPER_ROOT_LOG_LEVEL_KEY);
+            appRootLogLevel = getStringFromPrefs(APP_ROOT_LOG_LEVEL_KEY);
             nativeRootLogLevel = getStringFromPrefs(NATIVE_ROOT_LOG_LEVEL_KEY);
 
             clientMaxFileSize = getLongFromPrefs(CLIENT_MAX_FILE_SIZE_KEY);
             clientMaxNumberOfLogFiles = getIntFromPrefs(CLIENT_MAX_NUMBER_OF_LOG_FILES_KEY);
 
-            developerMaxFileSize = getLongFromPrefs(DEVELOPER_MAX_FILE_SIZE_KEY);
-            developerMaxNumberOfLogFiles = getIntFromPrefs(DEVELOPER_MAX_NUMBER_OF_LOG_FILES_KEY);
+            appMaxFileSize = getLongFromPrefs(APP_MAX_FILE_SIZE_KEY);
+            appMaxNumberOfLogFiles = getIntFromPrefs(APP_MAX_NUMBER_OF_LOG_FILES_KEY);
 
             nativeMaxFileSize = getLongFromPrefs(NATIVE_MAX_FILE_SIZE_KEY);
             nativeMaxNumberOfLogFiles = getIntFromPrefs(NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY);
@@ -156,10 +156,10 @@ public class Logging extends CordovaPlugin {
             }
         }
 
-        if(developerRootLogLevel != null)
+        if(appRootLogLevel != null)
         {
             try {
-                setRootLogLevel(developerRootLogLevel, DEVELOPER_DESTINATION);
+                setRootLogLevel(appRootLogLevel, APP_DESTINATION);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -192,20 +192,20 @@ public class Logging extends CordovaPlugin {
             catch (JSONException e){}
         }
 
-        if(developerMaxFileSize > 0 || developerMaxNumberOfLogFiles > 0)
+        if(appMaxFileSize > 0 || appMaxNumberOfLogFiles > 0)
         {
             try
             {
-                JSONObject developerSettings = new JSONObject();
-                if(developerMaxFileSize > 0)
+                JSONObject appSettings = new JSONObject();
+                if(appMaxFileSize > 0)
                 {
-                    developerSettings.put("maxFileSize", developerMaxFileSize);
+                    appSettings.put("maxFileSize", appMaxFileSize);
                 }
-                if(developerMaxNumberOfLogFiles > 0)
+                if(appMaxNumberOfLogFiles > 0)
                 {
-                    developerSettings.put("maxNumberOfFiles", developerMaxNumberOfLogFiles);
+                    appSettings.put("maxNumberOfFiles", appMaxNumberOfLogFiles);
                 }
-                configure(developerSettings, DEVELOPER_DESTINATION);
+                configure(appSettings, APP_DESTINATION);
             }
             catch (JSONException e){}
         }
@@ -610,14 +610,14 @@ public class Logging extends CordovaPlugin {
     {
         JSONObject paths = new JSONObject();
 
-        File developerFileStorageDir = new File(developerLogFileStoragePath);
-        for(File file : developerFileStorageDir.listFiles())
+        File appFileStorageDir = new File(appLogFileStoragePath);
+        for(File file : appFileStorageDir.listFiles())
         {
-            if(file.getName().equals(DEVELOPER_LOG_FILE_NAME))
+            if(file.getName().equals(APP_LOG_FILE_NAME))
             {
                 if (file.length() > 0)
                 {
-                    paths.put(DEVELOPER_DESTINATION, file.getAbsolutePath());
+                    paths.put(APP_DESTINATION, file.getAbsolutePath());
                 }
             }
         }
@@ -653,18 +653,18 @@ public class Logging extends CordovaPlugin {
     {
         JSONObject paths = new JSONObject();
 
-        File developerFileStorageDir = new File(developerLogFileStoragePath);
-        List<String> developerPaths = new ArrayList<String>();
-        for(File file : developerFileStorageDir.listFiles())
+        File appFileStorageDir = new File(appLogFileStoragePath);
+        List<String> appPaths = new ArrayList<String>();
+        for(File file : appFileStorageDir.listFiles())
         {
-            if(!file.getName().equals(DEVELOPER_LOG_FILE_NAME))
+            if(!file.getName().equals(APP_LOG_FILE_NAME))
             {
-                developerPaths.add(file.getAbsolutePath());
+                appPaths.add(file.getAbsolutePath());
             }
         }
-        if(developerPaths.size() > 0)
+        if(appPaths.size() > 0)
         {
-            paths.put(DEVELOPER_DESTINATION, developerPaths);
+            paths.put(APP_DESTINATION, appPaths);
         }
 
         File clientFileStorageDir = new File(clientLogFileStoragePath);
@@ -678,7 +678,7 @@ public class Logging extends CordovaPlugin {
         }
         if(clientPaths.size() > 0)
         {
-            paths.put(DEVELOPER_DESTINATION, clientPaths);
+            paths.put(APP_DESTINATION, clientPaths);
         }
 
         File nativeFileStorageDir = new File(nativeLogFileStoragePath);
@@ -784,7 +784,7 @@ public class Logging extends CordovaPlugin {
         {
             loggerArray = new ArrayList<String>();
             loggerArray.add(CLIENT_DESTINATION);
-            loggerArray.add(DEVELOPER_DESTINATION);
+            loggerArray.add(APP_DESTINATION);
             loggerArray.add(NATIVE_DESTINATION);
         }
 
@@ -810,9 +810,9 @@ public class Logging extends CordovaPlugin {
                         {
                             loggerFolder = new File(clientLogFileStoragePath);
                         }
-                        else if(loggerName.equals(DEVELOPER_DESTINATION))
+                        else if(loggerName.equals(APP_DESTINATION))
                         {
-                            loggerFolder = new File(developerLogFileStoragePath);
+                            loggerFolder = new File(appLogFileStoragePath);
                         }
                         else if(loggerName.equals(NATIVE_DESTINATION))
                         {
@@ -837,9 +837,9 @@ public class Logging extends CordovaPlugin {
                     {
                         putIntInPrefs(CLIENT_MAX_NUMBER_OF_LOG_FILES_KEY, maxNumberOfFiles);
                     }
-                    else if(loggerName.equals(DEVELOPER_DESTINATION))
+                    else if(loggerName.equals(APP_DESTINATION))
                     {
-                        putIntInPrefs(DEVELOPER_MAX_NUMBER_OF_LOG_FILES_KEY, maxNumberOfFiles);
+                        putIntInPrefs(APP_MAX_NUMBER_OF_LOG_FILES_KEY, maxNumberOfFiles);
                     }
                     else if(loggerName.equals(NATIVE_DESTINATION))
                     {
@@ -857,9 +857,9 @@ public class Logging extends CordovaPlugin {
                     {
                         putLongInPrefs(CLIENT_MAX_FILE_SIZE_KEY, maxFileSize);
                     }
-                    else if(loggerName.equals(DEVELOPER_DESTINATION))
+                    else if(loggerName.equals(APP_DESTINATION))
                     {
-                        putLongInPrefs(DEVELOPER_MAX_FILE_SIZE_KEY, maxFileSize);
+                        putLongInPrefs(APP_MAX_FILE_SIZE_KEY, maxFileSize);
                     }
                     else if(loggerName.equals(NATIVE_DESTINATION))
                     {
@@ -917,9 +917,9 @@ public class Logging extends CordovaPlugin {
                     {
                         putStringInPrefs(CLIENT_ROOT_LOG_LEVEL_KEY, desiredLevel);
                     }
-                    else if(loggerName.equals(DEVELOPER_DESTINATION))
+                    else if(loggerName.equals(APP_DESTINATION))
                     {
-                        putStringInPrefs(DEVELOPER_ROOT_LOG_LEVEL_KEY, desiredLevel);
+                        putStringInPrefs(APP_ROOT_LOG_LEVEL_KEY, desiredLevel);
                     }
                     else if(loggerName.equals(NATIVE_DESTINATION))
                     {
@@ -938,10 +938,10 @@ public class Logging extends CordovaPlugin {
 
     private void enableDestination(String destination)
     {
-        if (destination.equalsIgnoreCase(DEVELOPER_DESTINATION))
+        if (destination.equalsIgnoreCase(APP_DESTINATION))
         {
-            developerLoggingEnabled = true;
-            putBooleanInPrefs(DEVELOPER_LOGGING_ENABLED_KEY, true);
+            appLoggingEnabled = true;
+            putBooleanInPrefs(APP_LOGGING_ENABLED_KEY, true);
         }
         else if (destination.equalsIgnoreCase(CLIENT_DESTINATION))
         {
@@ -957,10 +957,10 @@ public class Logging extends CordovaPlugin {
 
     private void disableDestination(String destination)
     {
-        if (destination.equalsIgnoreCase(DEVELOPER_DESTINATION))
+        if (destination.equalsIgnoreCase(APP_DESTINATION))
         {
-            developerLoggingEnabled = false;
-            putBooleanInPrefs(DEVELOPER_LOGGING_ENABLED_KEY, false);
+            appLoggingEnabled = false;
+            putBooleanInPrefs(APP_LOGGING_ENABLED_KEY, false);
         }
         else if (destination.equalsIgnoreCase(CLIENT_DESTINATION))
         {
@@ -976,9 +976,9 @@ public class Logging extends CordovaPlugin {
 
     private boolean isDestinationEnabled(String destination)
     {
-        if (destination.equalsIgnoreCase(DEVELOPER_DESTINATION))
+        if (destination.equalsIgnoreCase(APP_DESTINATION))
         {
-            return developerLoggingEnabled;
+            return appLoggingEnabled;
         }
         else if (destination.equalsIgnoreCase(CLIENT_DESTINATION))
         {
@@ -1000,45 +1000,45 @@ public class Logging extends CordovaPlugin {
         LoggerContext lc = (LoggerContext)LoggerFactory.getILoggerFactory();
         lc.reset();
 
-        // Developer logger
+        // App logger
 
-        RollingFileAppender<ILoggingEvent> developerFileAppender = new RollingFileAppender<ILoggingEvent>();
-        developerFileAppender.setName("developer-file");
-        developerFileAppender.setContext(lc);
-        developerFileAppender.setFile(developerLogFileStoragePath + DEVELOPER_LOG_FILE_NAME);
-        developerFileAppender.setAppend(true);
+        RollingFileAppender<ILoggingEvent> appFileAppender = new RollingFileAppender<ILoggingEvent>();
+        appFileAppender.setName("app-file");
+        appFileAppender.setContext(lc);
+        appFileAppender.setFile(appLogFileStoragePath + APP_LOG_FILE_NAME);
+        appFileAppender.setAppend(true);
 
-        PatternLayoutEncoder developerEncoder = new PatternLayoutEncoder();
-        developerEncoder.setContext(lc);
-        developerEncoder.setPattern("%msg%n");
-        developerEncoder.start();
+        PatternLayoutEncoder appEncoder = new PatternLayoutEncoder();
+        appEncoder.setContext(lc);
+        appEncoder.setPattern("%msg%n");
+        appEncoder.start();
 
-        FixedWindowRollingPolicy developerRollingPolicy = new FixedWindowRollingPolicy();
-        developerRollingPolicy.setContext(lc);
-        developerRollingPolicy.setFileNamePattern(developerLogFileStoragePath + "developer %i.log");
-        developerRollingPolicy.setMinIndex(1);
-        developerRollingPolicy.setMaxIndex(4);
-        developerRollingPolicy.setParent(developerFileAppender);
-        developerRollingPolicy.start();
+        FixedWindowRollingPolicy appRollingPolicy = new FixedWindowRollingPolicy();
+        appRollingPolicy.setContext(lc);
+        appRollingPolicy.setFileNamePattern(appLogFileStoragePath + "app %i.log");
+        appRollingPolicy.setMinIndex(1);
+        appRollingPolicy.setMaxIndex(4);
+        appRollingPolicy.setParent(appFileAppender);
+        appRollingPolicy.start();
 
-        CustomSizeBasedTriggeringPolicy developerTriggeringPolicy = new CustomSizeBasedTriggeringPolicy();
-        developerTriggeringPolicy.setContext(lc);
-        developerTriggeringPolicy.setMaxFileSize("1MB");
-        developerTriggeringPolicy.start();
+        CustomSizeBasedTriggeringPolicy appTriggeringPolicy = new CustomSizeBasedTriggeringPolicy();
+        appTriggeringPolicy.setContext(lc);
+        appTriggeringPolicy.setMaxFileSize("1MB");
+        appTriggeringPolicy.start();
 
-        developerFileAppender.setEncoder(developerEncoder);
-        developerFileAppender.setRollingPolicy(developerRollingPolicy);
-        developerFileAppender.setTriggeringPolicy(developerTriggeringPolicy);
-        developerFileAppender.start();
+        appFileAppender.setEncoder(appEncoder);
+        appFileAppender.setRollingPolicy(appRollingPolicy);
+        appFileAppender.setTriggeringPolicy(appTriggeringPolicy);
+        appFileAppender.start();
 
-        Logger developerLogger = (Logger) LoggerFactory.getLogger("developer");
-        developerLogger.addAppender(developerFileAppender);
-        developerLogger.setLevel(Level.ERROR);
-        developerLogger.setAdditive(false);
+        Logger appLogger = (Logger) LoggerFactory.getLogger(APP_DESTINATION);
+        appLogger.addAppender(appFileAppender);
+        appLogger.setLevel(Level.ERROR);
+        appLogger.setAdditive(false);
 
-        loggers.put(DEVELOPER_DESTINATION, developerLogger);
+        loggers.put(APP_DESTINATION, appLogger);
 
-        // Developer logger
+        // App logger
 
         // Client logger
 
@@ -1071,7 +1071,7 @@ public class Logging extends CordovaPlugin {
         clientFileAppender.setTriggeringPolicy(clientTriggeringPolicy);
         clientFileAppender.start();
 
-        Logger clientLogger = (Logger) LoggerFactory.getLogger("client");
+        Logger clientLogger = (Logger) LoggerFactory.getLogger(CLIENT_DESTINATION);
         clientLogger.addAppender(clientFileAppender);
         clientLogger.setLevel(Level.ERROR);
         clientLogger.setAdditive(false);
@@ -1112,7 +1112,7 @@ public class Logging extends CordovaPlugin {
 
         nativeFileAppender.start();
 
-        Logger nativeLogger = (Logger) LoggerFactory.getLogger("native");
+        Logger nativeLogger = (Logger) LoggerFactory.getLogger(NATIVE_DESTINATION);
         nativeLogger.addAppender(nativeFileAppender);
         nativeLogger.setLevel(Level.ERROR);
         nativeLogger.setAdditive(false);

@@ -5,14 +5,14 @@
 //
 //
 
-#import "DeveloperFormatter.h"
+#import "AppFormatter.h"
 
 static NSString *const LOG_LEVEL_INFO = @"INFO";
 static NSString *const LOG_LEVEL_DEBUG = @"DEBUG";
 static NSString *const LOG_LEVEL_WARNING = @"WARN";
 static NSString *const LOG_LEVEL_ERROR = @"ERROR";
 
-@implementation DeveloperFormatter
+@implementation AppFormatter
 {
     NSString *logRootLevel;
 }
@@ -39,7 +39,7 @@ static NSString *const LOG_LEVEL_ERROR = @"ERROR";
     
     NSString *dateAndTime = [threadUnsafeDateFormatter stringFromDate:(logMessage.timestamp)];
     
-    if (logMessage.context == LOG_CONTEXT_DEVELOPER || logMessage.context == 0)
+    if (logMessage.context == LOG_CONTEXT_APP || logMessage.context == 0)
         return [NSString stringWithFormat:@"%@", logMessage.message];
     else
         return nil;

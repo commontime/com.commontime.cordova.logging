@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
         id="com.commontime.cordova.logging"
-        version="1.0.15">
+        version="1.0.16">
 
   <name>Logging</name>
 
@@ -47,12 +47,12 @@
     <source-file src="src/ios/Logging.m" target-dir="LoggingPlugin"/>
     <header-file src="src/ios/ClientLogFileManager.h" target-dir="LoggingPlugin"/>
     <source-file src="src/ios/ClientLogFileManager.m" target-dir="LoggingPlugin"/>
-    <header-file src="src/ios/DeveloperLogFileManager.h" target-dir="LoggingPlugin"/>
-    <source-file src="src/ios/DeveloperLogFileManager.m" target-dir="LoggingPlugin"/>
+    <header-file src="src/ios/AppLogFileManager.h" target-dir="LoggingPlugin"/>
+    <source-file src="src/ios/AppLogFileManager.m" target-dir="LoggingPlugin"/>
     <header-file src="src/ios/NativeLogFileManager.h" target-dir="LoggingPlugin"/>
     <source-file src="src/ios/NativeLogFileManager.m" target-dir="LoggingPlugin"/>    
-    <header-file src="src/ios/DeveloperFormatter.h" target-dir="LoggingPlugin"/>
-    <source-file src="src/ios/DeveloperFormatter.m" target-dir="LoggingPlugin"/>
+    <header-file src="src/ios/AppFormatter.h" target-dir="LoggingPlugin"/>
+    <source-file src="src/ios/AppFormatter.m" target-dir="LoggingPlugin"/>
     <header-file src="src/ios/ClientFormatter.h" target-dir="LoggingPlugin"/>
     <source-file src="src/ios/ClientFormatter.m" target-dir="LoggingPlugin"/>
     <header-file src="src/ios/NativeFormatter.h" target-dir="LoggingPlugin"/>

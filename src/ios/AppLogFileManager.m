@@ -1,15 +1,15 @@
 //
-//  DeveloperFileManager.m
+//  AppLogFileManager.m
 //
 //  Created by Richard Lewin on 25/11/2016.
 //
 //
 
-#import "DeveloperLogFileManager.h"
+#import "AppLogFileManager.h"
 
-static NSString *const FILE_NAME = @"developer.log";
+static NSString *const FILE_NAME = @"app.log";
 
-@implementation DeveloperLogFileManager
+@implementation AppLogFileManager
 
 - (NSString *)newLogFileName
 {
@@ -20,14 +20,14 @@ static NSString *const FILE_NAME = @"developer.log";
     {
         if (files.count == self.maximumNumberOfLogFiles)
         {
-            [fm removeItemAtPath:[self.logsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"developer %d.log", files.count - 1]] error:nil];
+            [fm removeItemAtPath:[self.logsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"app %d.log", files.count - 1]] error:nil];
         }
         
         files = [[fm contentsOfDirectoryAtPath:self.logsDirectory error:&error] mutableCopy];
         
         if(files.count > 0)
         {
-            files[files.count-1] = @"developer 0.log";
+            files[files.count-1] = @"app 0.log";
             files = [[files sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] mutableCopy];
             files[0] = FILE_NAME;
         }
@@ -38,7 +38,7 @@ static NSString *const FILE_NAME = @"developer.log";
             NSString *fileNumberString = [self extractNumberFromText:file];
             int fileNumber = [fileNumberString intValue];
             
-            NSString* testPath = [self.logsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"developer %d.log", fileNumber + 1]];
+            NSString* testPath = [self.logsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"app %d.log", fileNumber + 1]];
             if (![fm fileExistsAtPath:testPath])
             {
                 [fm moveItemAtPath:filePath toPath:testPath error:nil];

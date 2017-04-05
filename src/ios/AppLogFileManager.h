@@ -1,5 +1,5 @@
 //
-//  DeveloperFileManager.h
+//  AppFileManager.h
 //
 //  Created by Richard Lewin on 25/11/2016.
 //
@@ -7,7 +7,7 @@
 
 #import "DDFileLogger.h"
 
-@interface DeveloperLogFileManager : DDLogFileManagerDefault
+@interface AppLogFileManager : DDLogFileManagerDefault
 
 - (NSString *)newLogFileName;
 - (BOOL)isLogFile;

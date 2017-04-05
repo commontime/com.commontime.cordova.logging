@@ -9,7 +9,7 @@
 #import "DDContextFilterLogFormatter.h"
 #import "CustomLog.h"
 
-@interface DeveloperFormatter : NSObject <DDLogFormatter> {
+@interface AppFormatter : NSObject <DDLogFormatter> {
     int loggerCount;
     NSDateFormatter *threadUnsafeDateFormatter;
 }

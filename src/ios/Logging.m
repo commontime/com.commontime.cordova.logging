@@ -8,7 +8,7 @@ static NSString *const NO_LOGGERS_MSG = @"No logger or loggers specified";
 static NSString *const LOGGING_DISABLED = @"Logging is disabled";
 
 static NSString *const CLIENT_DESTINATION = @"client";
-static NSString *const DEVELOPER_DESTINATION = @"developer";
+static NSString *const APP_DESTINATION = @"app";
 static NSString *const NATIVE_DESTINATION = @"native";
 
 static NSString *const LOG_LEVEL_OFF = @"off";
@@ -18,22 +18,22 @@ static NSString *const LOG_LEVEL_WARNING = @"warn";
 static NSString *const LOG_LEVEL_ERROR = @"error";
 
 static NSString *const CLIENT_LOG_FILE_NAME = @"client.log";
-static NSString *const DEVELOPER_LOG_FILE_NAME = @"developer.log";
+static NSString *const APP_LOG_FILE_NAME = @"app.log";
 static NSString *const NATIVE_LOG_FILE_NAME = @"native.log";
 
 static NSString *const LOG_FILES_ZIP_NAME = @"logs.zip";
 
 static NSString *const LOGGING_ENABLED_KEY = @"loggingEnabled";
 static NSString *const CLIENT_LOGGING_ENABLED_KEY = @"clientLoggingEnabled";
-static NSString *const DEVELOPER_LOGGING_ENABLED_KEY = @"developerLoggingEnabled";
+static NSString *const APP_LOGGING_ENABLED_KEY = @"appLoggingEnabled";
 static NSString *const NATIVE_LOGGING_ENABLED_KEY = @"nativeLoggingEnabled";
 static NSString *const CLIENT_ROOT_LOG_LEVEL_KEY = @"clientRootLogLevel";
-static NSString *const DEVELOPER_ROOT_LOG_LEVEL_KEY = @"developerRootLogLevel";
+static NSString *const APP_ROOT_LOG_LEVEL_KEY = @"appRootLogLevel";
 static NSString *const NATIVE_ROOT_LOG_LEVEL_KEY = @"nativeRootLogLevel";
 static NSString *const CLIENT_MAX_FILE_SIZE_KEY = @"clientMaxFileSize";
 static NSString *const CLIENT_MAX_NUMBER_OF_LOG_FILES_KEY = @"clientMaxNumberOfLogFiles";
-static NSString *const DEVELOPER_MAX_FILE_SIZE_KEY = @"developerMaxFileSize";
-static NSString *const DEVELOPER_MAX_NUMBER_OF_LOG_FILES_KEY = @"developerMaxNumberOfLogFiles";
+static NSString *const APP_MAX_FILE_SIZE_KEY = @"apprMaxFileSize";
+static NSString *const APP_MAX_NUMBER_OF_LOG_FILES_KEY = @"appMaxNumberOfLogFiles";
 static NSString *const NATIVE_MAX_FILE_SIZE_KEY = @"nativeMaxFileSize";
 static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfLogFiles";
 
@@ -43,7 +43,7 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
     NSString *documentsDirectoryPath;
     NSString *logFileDirectoryPath;
     BOOL loggingEnabled;
-    BOOL developerLoggingEnabled;
+    BOOL appLoggingEnabled;
     BOOL clientLoggingEnabled;
     BOOL nativeLoggingEnabled;
 }
@@ -53,19 +53,19 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
     documentsDirectoryPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     logFileDirectoryPath = [documentsDirectoryPath stringByAppendingPathComponent:@"logs"];
     loggingEnabled = NO;
-    developerLoggingEnabled = NO;
+    appLoggingEnabled = NO;
     clientLoggingEnabled = NO;
     nativeLoggingEnabled = NO;
     
     [self setupLoggers];
     
     NSString* clientRootLogLevel;
-    NSString* developerRootLogLevel;
+    NSString* appRootLogLevel;
     NSString* nativeRootLogLevel;
     long clientMaxFileSize;
     int clientMaxNumberOfLogFiles;
-    long developerMaxFileSize;
-    int developerMaxNumberOfLogFiles;
+    long appMaxFileSize;
+    int appMaxNumberOfLogFiles;
     long nativeMaxFileSize;
     int nativeMaxNumberOfLogFiles;
     
@@ -77,14 +77,14 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
         }
         
         clientRootLogLevel = [self.commandDelegate.settings objectForKey:[CLIENT_ROOT_LOG_LEVEL_KEY lowercaseString]];
-        developerRootLogLevel = [self.commandDelegate.settings objectForKey:[DEVELOPER_ROOT_LOG_LEVEL_KEY lowercaseString]];
+        appRootLogLevel = [self.commandDelegate.settings objectForKey:[APP_ROOT_LOG_LEVEL_KEY lowercaseString]];
         nativeRootLogLevel = [self.commandDelegate.settings objectForKey:[NATIVE_ROOT_LOG_LEVEL_KEY lowercaseString]];
     
         clientMaxFileSize = [[self.commandDelegate.settings objectForKey:[CLIENT_MAX_FILE_SIZE_KEY lowercaseString]] longLongValue];
         clientMaxNumberOfLogFiles = [[self.commandDelegate.settings objectForKey:[CLIENT_MAX_NUMBER_OF_LOG_FILES_KEY lowercaseString]] intValue];
     
-        developerMaxFileSize = [[self.commandDelegate.settings objectForKey:[DEVELOPER_MAX_FILE_SIZE_KEY lowercaseString]] longLongValue];
-        developerMaxNumberOfLogFiles = [[self.commandDelegate.settings objectForKey:[DEVELOPER_MAX_NUMBER_OF_LOG_FILES_KEY lowercaseString]] intValue];
+        appMaxFileSize = [[self.commandDelegate.settings objectForKey:[APP_MAX_FILE_SIZE_KEY lowercaseString]] longLongValue];
+        appMaxNumberOfLogFiles = [[self.commandDelegate.settings objectForKey:[APP_MAX_NUMBER_OF_LOG_FILES_KEY lowercaseString]] intValue];
     
         nativeMaxFileSize = [[self.commandDelegate.settings objectForKey:[NATIVE_MAX_FILE_SIZE_KEY lowercaseString]] longLongValue];
         nativeMaxNumberOfLogFiles = [[self.commandDelegate.settings objectForKey:[NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY lowercaseString]] intValue];
@@ -92,19 +92,19 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
     else
     {
         loggingEnabled = [self getBoolFromPrefs:LOGGING_ENABLED_KEY];
-        developerLoggingEnabled = [self getBoolFromPrefs:DEVELOPER_LOGGING_ENABLED_KEY];
+        appLoggingEnabled = [self getBoolFromPrefs:APP_LOGGING_ENABLED_KEY];
         clientLoggingEnabled = [self getBoolFromPrefs:CLIENT_LOGGING_ENABLED_KEY];
         nativeLoggingEnabled = [self getBoolFromPrefs:NATIVE_LOGGING_ENABLED_KEY];
         
         clientRootLogLevel = [self getStringFromPrefs:CLIENT_ROOT_LOG_LEVEL_KEY];
-        developerRootLogLevel = [self getStringFromPrefs:DEVELOPER_ROOT_LOG_LEVEL_KEY];
+        appRootLogLevel = [self getStringFromPrefs:APP_ROOT_LOG_LEVEL_KEY];
         nativeRootLogLevel = [self getStringFromPrefs:NATIVE_ROOT_LOG_LEVEL_KEY];
         
         clientMaxFileSize = [self getLongFromPrefs:CLIENT_MAX_FILE_SIZE_KEY];
         clientMaxNumberOfLogFiles = [self getIntFromPrefs:CLIENT_MAX_NUMBER_OF_LOG_FILES_KEY];
         
-        developerMaxFileSize = [self getLongFromPrefs:DEVELOPER_MAX_FILE_SIZE_KEY];
-        developerMaxNumberOfLogFiles = [self getIntFromPrefs:DEVELOPER_MAX_NUMBER_OF_LOG_FILES_KEY];
+        appMaxFileSize = [self getLongFromPrefs:APP_MAX_FILE_SIZE_KEY];
+        appMaxNumberOfLogFiles = [self getIntFromPrefs:APP_MAX_NUMBER_OF_LOG_FILES_KEY];
         
         nativeMaxFileSize = [self getLongFromPrefs:NATIVE_MAX_FILE_SIZE_KEY];
         nativeMaxNumberOfLogFiles = [self getIntFromPrefs:NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY];
@@ -115,9 +115,9 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
         [self setRootLogLevelPrivate: clientRootLogLevel: CLIENT_DESTINATION];
     }
     
-    if(developerRootLogLevel != nil)
+    if(appRootLogLevel != nil)
     {
-        [self setRootLogLevelPrivate: developerRootLogLevel: DEVELOPER_DESTINATION];
+        [self setRootLogLevelPrivate: appRootLogLevel: APP_DESTINATION];
     }
     
     if(nativeRootLogLevel != nil)
@@ -139,18 +139,18 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
         [self configurePrivate: clientSettings :CLIENT_DESTINATION];
     }
     
-    if(developerMaxFileSize > 0 || clientRootLogLevel > 0)
+    if(appMaxFileSize > 0 || appMaxNumberOfLogFiles > 0)
     {
-        NSMutableDictionary *developerSettings = [[NSMutableDictionary alloc] init];
-        if(developerMaxFileSize > 0)
+        NSMutableDictionary *appSettings = [[NSMutableDictionary alloc] init];
+        if(appMaxFileSize > 0)
         {
-            [developerSettings setObject:[NSNumber numberWithLong:developerMaxFileSize] forKey:@"maxFileSize"];
+            [appSettings setObject:[NSNumber numberWithLong:appMaxFileSize] forKey:@"maxFileSize"];
         }
-        if(developerMaxNumberOfLogFiles > 0)
+        if(appMaxNumberOfLogFiles > 0)
         {
-            [developerSettings setObject:[NSNumber numberWithInt:developerMaxNumberOfLogFiles] forKey:@"maxNumberOfFiles"];
+            [appSettings setObject:[NSNumber numberWithInt:appMaxNumberOfLogFiles] forKey:@"maxNumberOfFiles"];
         }
-        [self configurePrivate: developerSettings :DEVELOPER_DESTINATION];
+        [self configurePrivate: appSettings :APP_DESTINATION];
     }
     
     if(nativeMaxFileSize > 0 || nativeMaxNumberOfLogFiles > 0)
@@ -425,13 +425,13 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
         [paths setValue:clientLoggerFilePath forKey:CLIENT_DESTINATION];
     }
     
-    logger = [loggers objectForKey:DEVELOPER_DESTINATION];
-    NSString *developerLoggerFilePath = [(DeveloperLogFileManager*)logger.logFileManager getLogFilePath];
-    NSDictionary *developerAttributes = [manager attributesOfItemAtPath:developerLoggerFilePath error:nil];
-    unsigned long long developerFileSize = [developerAttributes fileSize];
-    if (developerAttributes && developerFileSize > 0)
+    logger = [loggers objectForKey:APP_DESTINATION];
+    NSString *appLoggerFilePath = [(AppLogFileManager*)logger.logFileManager getLogFilePath];
+    NSDictionary *appAttributes = [manager attributesOfItemAtPath:appLoggerFilePath error:nil];
+    unsigned long long appFileSize = [appAttributes fileSize];
+    if (appAttributes && appFileSize > 0)
     {
-        [paths setValue:developerLoggerFilePath forKey:DEVELOPER_DESTINATION];
+        [paths setValue:appLoggerFilePath forKey:APP_DESTINATION];
     }
     
     logger = [loggers objectForKey:NATIVE_DESTINATION];
@@ -473,20 +473,20 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
         [paths setObject:clientPaths forKey:CLIENT_DESTINATION];
     }
     
-    logger = [loggers objectForKey:DEVELOPER_DESTINATION];
-    logFileDir = [(DeveloperLogFileManager*)logger.logFileManager logsDirectory];
+    logger = [loggers objectForKey:APP_DESTINATION];
+    logFileDir = [(AppLogFileManager*)logger.logFileManager logsDirectory];
     files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:logFileDir error:nil];
-    NSMutableArray *developerPaths = [[NSMutableArray alloc] init];
+    NSMutableArray *appPaths = [[NSMutableArray alloc] init];
     for(NSString *file in files)
     {
-        if(![file isEqualToString:DEVELOPER_LOG_FILE_NAME])
+        if(![file isEqualToString:APP_LOG_FILE_NAME])
         {
-            [developerPaths addObject:[logFileDir stringByAppendingPathComponent:file]];
+            [appPaths addObject:[logFileDir stringByAppendingPathComponent:file]];
         }
     }
-    if(developerPaths.count > 0)
+    if(appPaths.count > 0)
     {
-        [paths setObject:developerPaths forKey:DEVELOPER_DESTINATION];
+        [paths setObject:appPaths forKey:APP_DESTINATION];
     }
     
     logger = [loggers objectForKey:NATIVE_DESTINATION];
@@ -717,10 +717,10 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
                 if(fileLogger == nil)
                     continue;
                 
-                if([destination caseInsensitiveCompare:DEVELOPER_DESTINATION] == NSOrderedSame)
+                if([destination caseInsensitiveCompare:APP_DESTINATION] == NSOrderedSame)
                 {
-                    [(DeveloperFormatter*)fileLogger.logFormatter setRootLogLevel:level];
-                    [self putObjectInPrefs:DEVELOPER_ROOT_LOG_LEVEL_KEY :desiredLevel];
+                    [(AppFormatter*)fileLogger.logFormatter setRootLogLevel:level];
+                    [self putObjectInPrefs:APP_ROOT_LOG_LEVEL_KEY :desiredLevel];
                 }
                 else if([destination caseInsensitiveCompare:CLIENT_DESTINATION] == NSOrderedSame)
                 {
@@ -746,9 +746,9 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
 - (NSString*)getRootLogLevelPrivate:(NSString*)destination
 {
     DDFileLogger *fileLogger = [loggers objectForKey:destination];
-    if([destination caseInsensitiveCompare:DEVELOPER_DESTINATION] == NSOrderedSame)
+    if([destination caseInsensitiveCompare:APP_DESTINATION] == NSOrderedSame)
     {
-        return [[(DeveloperFormatter*)fileLogger.logFormatter getRootLogLevel] lowercaseString];
+        return [[(AppFormatter*)fileLogger.logFormatter getRootLogLevel] lowercaseString];
     }
     else if([destination caseInsensitiveCompare:CLIENT_DESTINATION] == NSOrderedSame)
     {
@@ -763,10 +763,10 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
 
 - (void)enableDestinationPrivate:(NSString*)destination
 {
-    if([destination caseInsensitiveCompare:DEVELOPER_DESTINATION] == NSOrderedSame)
+    if([destination caseInsensitiveCompare:APP_DESTINATION] == NSOrderedSame)
     {
-        developerLoggingEnabled = YES;
-        [self putBoolInPrefs:DEVELOPER_LOGGING_ENABLED_KEY :YES];
+        appLoggingEnabled = YES;
+        [self putBoolInPrefs:APP_LOGGING_ENABLED_KEY :YES];
     }
     else if([destination caseInsensitiveCompare:CLIENT_DESTINATION] == NSOrderedSame)
     {
@@ -782,10 +782,10 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
 
 - (void)disableDestinationPrivate:(NSString*)destination
 {
-    if([destination caseInsensitiveCompare:DEVELOPER_DESTINATION] == NSOrderedSame)
+    if([destination caseInsensitiveCompare:APP_DESTINATION] == NSOrderedSame)
     {
-        developerLoggingEnabled = NO;
-        [self putBoolInPrefs:DEVELOPER_LOGGING_ENABLED_KEY :NO];
+        appLoggingEnabled = NO;
+        [self putBoolInPrefs:APP_LOGGING_ENABLED_KEY :NO];
     }
     else if([destination caseInsensitiveCompare:CLIENT_DESTINATION] == NSOrderedSame)
     {
@@ -801,9 +801,9 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
                                      
 - (BOOL)isDestinationEnabledPrivate:(NSString*)destination
 {
-    if([destination caseInsensitiveCompare:DEVELOPER_DESTINATION] == NSOrderedSame)
+    if([destination caseInsensitiveCompare:APP_DESTINATION] == NSOrderedSame)
     {
-        return developerLoggingEnabled;
+        return appLoggingEnabled;
     }
     else if([destination caseInsensitiveCompare:CLIENT_DESTINATION] == NSOrderedSame)
     {
@@ -826,7 +826,7 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
     }
     else
     {
-        loggerArray = [[NSArray alloc] initWithObjects:CLIENT_DESTINATION, DEVELOPER_DESTINATION, NATIVE_DESTINATION, nil];
+        loggerArray = [[NSArray alloc] initWithObjects:CLIENT_DESTINATION, APP_DESTINATION, NATIVE_DESTINATION, nil];
     }
     
     long maxFileSize = [settings[@"maxFileSize"] longValue];
@@ -856,9 +856,9 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
                             {
                                 [fm removeItemAtPath:[[fileLogger.logFileManager logsDirectory] stringByAppendingPathComponent:[NSString stringWithFormat:@"client %d.log", index]] error:nil];
                             }
-                            else if([destination isEqualToString:DEVELOPER_DESTINATION])
+                            else if([destination isEqualToString:APP_DESTINATION])
                             {
-                                [fm removeItemAtPath:[[fileLogger.logFileManager logsDirectory] stringByAppendingPathComponent:[NSString stringWithFormat:@"developer %d.log", index]] error:nil];
+                                [fm removeItemAtPath:[[fileLogger.logFileManager logsDirectory] stringByAppendingPathComponent:[NSString stringWithFormat:@"app %d.log", index]] error:nil];
                             }
                             else if([destination isEqualToString:NATIVE_DESTINATION])
                             {
@@ -873,9 +873,9 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
             {
                 [self putIntInPrefs:CLIENT_MAX_NUMBER_OF_LOG_FILES_KEY: maxNumberOfFiles];
             }
-            else if([destination isEqualToString:DEVELOPER_DESTINATION])
+            else if([destination isEqualToString:APP_DESTINATION])
             {
-                [self putIntInPrefs:DEVELOPER_MAX_NUMBER_OF_LOG_FILES_KEY: maxNumberOfFiles];
+                [self putIntInPrefs:APP_MAX_NUMBER_OF_LOG_FILES_KEY: maxNumberOfFiles];
             }
             else if([destination isEqualToString:NATIVE_DESTINATION])
             {
@@ -890,9 +890,9 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
             {
                 [self putLongInPrefs:CLIENT_MAX_FILE_SIZE_KEY: maxFileSize];
             }
-            else if([destination isEqualToString:DEVELOPER_DESTINATION])
+            else if([destination isEqualToString:APP_DESTINATION])
             {
-                [self putLongInPrefs:DEVELOPER_MAX_FILE_SIZE_KEY: maxFileSize];
+                [self putLongInPrefs:APP_MAX_FILE_SIZE_KEY: maxFileSize];
             }
             else if([destination isEqualToString:NATIVE_DESTINATION])
             {
@@ -942,11 +942,11 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
                     ClientLogInfo(msg);
                 }
             }
-            else if([logger caseInsensitiveCompare:DEVELOPER_DESTINATION] == NSOrderedSame)
+            else if([logger caseInsensitiveCompare:APP_DESTINATION] == NSOrderedSame)
             {
-                if(developerLoggingEnabled)
+                if(appLoggingEnabled)
                 {
-                    DeveloperLogInfo(msg);
+                    AppLogInfo(msg);
                 }
             }
             else if([logger caseInsensitiveCompare:NATIVE_DESTINATION] == NSOrderedSame)
@@ -976,11 +976,11 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
                     ClientLogDebug(msg);
                 }
             }
-            else if([logger caseInsensitiveCompare:DEVELOPER_DESTINATION] == NSOrderedSame)
+            else if([logger caseInsensitiveCompare:APP_DESTINATION] == NSOrderedSame)
             {
-                if(developerLoggingEnabled)
+                if(appLoggingEnabled)
                 {
-                    DeveloperLogDebug(msg);
+                    AppLogDebug(msg);
                 }
             }
             else if([logger caseInsensitiveCompare:NATIVE_DESTINATION] == NSOrderedSame)
@@ -1010,11 +1010,11 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
                     ClientLogWarn(msg);
                 }
             }
-            else if([logger caseInsensitiveCompare:DEVELOPER_DESTINATION] == NSOrderedSame)
+            else if([logger caseInsensitiveCompare:APP_DESTINATION] == NSOrderedSame)
             {
-                if(developerLoggingEnabled)
+                if(appLoggingEnabled)
                 {
-                    DeveloperLogWarn(msg);
+                    AppLogWarn(msg);
                 }
             }
             else if([logger caseInsensitiveCompare:NATIVE_DESTINATION] == NSOrderedSame)
@@ -1044,11 +1044,11 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
                     ClientLogError(msg);
                 }
             }
-            else if([logger caseInsensitiveCompare:DEVELOPER_DESTINATION] == NSOrderedSame)
+            else if([logger caseInsensitiveCompare:APP_DESTINATION] == NSOrderedSame)
             {
-                if(developerLoggingEnabled)
+                if(appLoggingEnabled)
                 {
-                    DeveloperLogError(msg);
+                    AppLogError(msg);
                 }
             }
             else if([logger caseInsensitiveCompare:NATIVE_DESTINATION] == NSOrderedSame)
@@ -1085,18 +1085,18 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
     
     loggers = [[NSMutableDictionary alloc] init];
     
-    DDFileLogger *developerFileLogger = [[DDFileLogger alloc] initWithLogFileManager:[[DeveloperLogFileManager alloc] initWithLogsDirectory:[logFileDirectoryPath stringByAppendingPathComponent:DEVELOPER_DESTINATION]]];
-    [developerFileLogger setMaximumFileSize:(1000 * 1000)];
-    [developerFileLogger setRollingFrequency:(0)];
-    [developerFileLogger.logFileManager setMaximumNumberOfLogFiles:5];
-    DeveloperFormatter *developerFormatter = [[DeveloperFormatter alloc] init];
-    [developerFormatter setRootLogLevel:DDLogLevelError];
-    [developerFileLogger setLogFormatter:developerFormatter];
-    [loggers setObject:developerFileLogger forKey:DEVELOPER_DESTINATION];
-    [DDLog addLogger:developerFileLogger];
+    DDFileLogger *appFileLogger = [[DDFileLogger alloc] initWithLogFileManager:[[AppLogFileManager alloc] initWithLogsDirectory:[logFileDirectoryPath stringByAppendingPathComponent:APP_DESTINATION]]];
+    [appFileLogger setMaximumFileSize:(1000000)];
+    [appFileLogger setRollingFrequency:(0)];
+    [appFileLogger.logFileManager setMaximumNumberOfLogFiles:5];
+    AppFormatter *appFormatter = [[AppFormatter alloc] init];
+    [appFormatter setRootLogLevel:DDLogLevelError];
+    [appFileLogger setLogFormatter:appFormatter];
+    [loggers setObject:appFileLogger forKey:APP_DESTINATION];
+    [DDLog addLogger:appFileLogger];
     
     DDFileLogger *clientFileLogger = [[DDFileLogger alloc] initWithLogFileManager:[[ClientLogFileManager alloc] initWithLogsDirectory:[logFileDirectoryPath stringByAppendingPathComponent:CLIENT_DESTINATION]]];
-    [clientFileLogger setMaximumFileSize:(1000 * 1000)];
+    [clientFileLogger setMaximumFileSize:(1000000)];
     [clientFileLogger setRollingFrequency:(0)];
     [clientFileLogger.logFileManager setMaximumNumberOfLogFiles:5];
     ClientFormatter *clientFormatter = [[ClientFormatter alloc] init];
@@ -1106,7 +1106,7 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
     [DDLog addLogger:clientFileLogger];
     
     DDFileLogger *nativeFileLogger = [[DDFileLogger alloc] initWithLogFileManager:[[NativeLogFileManager alloc] initWithLogsDirectory:[logFileDirectoryPath stringByAppendingPathComponent:NATIVE_DESTINATION]]];
-    [nativeFileLogger setMaximumFileSize:(1000 * 1000];
+    [nativeFileLogger setMaximumFileSize:(1000000)];
     [nativeFileLogger setRollingFrequency:(0)];
     [nativeFileLogger.logFileManager setMaximumNumberOfLogFiles:5];
     NativeFormatter *nativeFormatter = [[NativeFormatter alloc] init];

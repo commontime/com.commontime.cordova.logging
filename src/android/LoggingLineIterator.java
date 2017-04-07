@@ -172,7 +172,7 @@ public class LoggingLineIterator implements Iterator<String> {
      *
      * @param iterator  the iterator to close
      */
-    public static void closeQuietly(final LineIterator iterator) {
+    public static void closeQuietly(final LoggingLineIterator iterator) {
         if (iterator != null) {
             iterator.close();
         }

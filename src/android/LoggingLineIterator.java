@@ -153,7 +153,7 @@ public class LoggingLineIterator implements Iterator<String> {
      */
     public void close() {
        finished = true;
-       IOUtils.closeQuietly(bufferedReader);
+       LoggingIOUtils.closeQuietly(bufferedReader);
         cachedLine = null;
     }
 

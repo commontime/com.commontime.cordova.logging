@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
         id="com.commontime.cordova.logging"
-        version="1.0.18">
+        version="1.0.19">
 
   <name>Logging</name>
 

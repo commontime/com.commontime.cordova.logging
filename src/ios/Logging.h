@@ -3,10 +3,10 @@
 #import "CocoaLumberjack.h"
 #import "ClientFormatter.h"
 #import "NativeFormatter.h"
-#import "DeveloperFormatter.h"
+#import "AppFormatter.h"
 #import "ClientLogFileManager.h"
 #import "NativeLogFileManager.h"
-#import "DeveloperLogFileManager.h"
+#import "AppLogFileManager.h"
 
 @interface Logging : CDVPlugin
 

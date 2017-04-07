@@ -508,7 +508,7 @@ public class Logging extends CordovaPlugin {
                             copy(inputFile, outputFile);
                         }
 
-                        ZipUtility.zipDirectory(tmpToZipFolder, zipFile);
+                        LoggingZipUtility.zipDirectory(tmpToZipFolder, zipFile);
 
                         deleteDirectory(tmpToZipFolder);
 

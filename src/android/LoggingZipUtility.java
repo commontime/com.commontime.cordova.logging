@@ -14,7 +14,7 @@ import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-public class ZipUtility {
+public class LoggingZipUtility {
 
 	public static final void zipDirectory(File directory, File zip)
 			throws IOException {
@@ -59,7 +59,7 @@ public class ZipUtility {
 
 				InputStream in = archive.getInputStream(entry);
 				OutputStream out = new FileOutputStream(file);
-				IOUtils.copy(in, out);
+				LoggingIOUtils.copy(in, out);
 				in.close();
 				out.close();
 			}
@@ -84,7 +84,7 @@ public class ZipUtility {
 				}
 								
 				OutputStream out = new FileOutputStream(file);
-				IOUtils.copy(zis, out);		
+				LoggingIOUtils.copy(zis, out);
 				out.flush();
 				out.close();
 				

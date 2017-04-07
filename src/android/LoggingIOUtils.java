@@ -78,7 +78,7 @@ import java.util.List;
  * @author Sandy McArthur
  * @version $Id: IOUtils.java 481854 2006-12-03 18:30:07Z scolebourne $
  */
-public class IOUtils {
+public class LoggingIOUtils {
     // NOTE: This class is focussed on InputStream, OutputStream, Reader and
     // Writer. Each method should take at least one of these as a parameter,
     // or return one of them.
@@ -123,7 +123,7 @@ public class IOUtils {
     /**
      * Instances should NOT be constructed in standard programming.
      */
-    public IOUtils() {
+    public LoggingIOUtils() {
         super();
     }
 
@@ -536,8 +536,8 @@ public class IOUtils {
      * @throws IllegalArgumentException if the reader is null
      * @since Commons IO 1.2
      */
-    public static LineIterator lineIterator(Reader reader) {
-        return new LineIterator(reader);
+    public static LoggingLineIterator lineIterator(Reader reader) {
+        return new LoggingLineIterator(reader);
     }
 
     /**
@@ -570,7 +570,7 @@ public class IOUtils {
      * @throws IOException if an I/O error occurs, such as if the encoding is invalid
      * @since Commons IO 1.2
      */
-    public static LineIterator lineIterator(InputStream input, String encoding) 
+    public static LoggingLineIterator lineIterator(InputStream input, String encoding)
                      throws IOException {
         Reader reader = null;
         if (encoding == null) {
@@ -578,7 +578,7 @@ public class IOUtils {
         } else {
             reader = new InputStreamReader(input, encoding);
         }
-        return new LineIterator(reader);
+        return new LoggingLineIterator(reader);
     }
 
     //-----------------------------------------------------------------------

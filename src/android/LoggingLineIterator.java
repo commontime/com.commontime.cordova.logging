@@ -48,7 +48,7 @@ import java.util.NoSuchElementException;
  * @version $Id: LineIterator.java 1471767 2013-04-24 23:24:19Z sebb $
  * @since 1.2
  */
-public class LineIterator implements Iterator<String> {
+public class LoggingLineIterator implements Iterator<String> {
 
     // N.B. This class deliberately does not implement Iterable, see https://issues.apache.org/jira/browse/IO-181
 
@@ -65,7 +65,7 @@ public class LineIterator implements Iterator<String> {
      * @param reader the <code>Reader</code> to read from, not null
      * @throws IllegalArgumentException if the reader is null
      */
-    public LineIterator(final Reader reader) throws IllegalArgumentException {
+    public LoggingLineIterator(final Reader reader) throws IllegalArgumentException {
         if (reader == null) {
             throw new IllegalArgumentException("Reader must not be null");
         }

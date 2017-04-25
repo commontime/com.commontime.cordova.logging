@@ -772,13 +772,17 @@ public class Logging extends CordovaPlugin {
         }.execute();
     }
 
-    private void configure(JSONObject settings, Object destination) throws JSONException
+    private void configure(JSONObject settings, Object destination)
     {
         List<String> loggerArray;
 
         if(destination instanceof String || destination instanceof JSONArray)
         {
-            loggerArray = createLoggerArrayFromArgument(destination);
+            try
+            {
+                loggerArray = createLoggerArrayFromArgument(destination);
+            }
+            catch (JSONException e) { return; }
         }
         else
         {
@@ -788,8 +792,19 @@ public class Logging extends CordovaPlugin {
             loggerArray.add(NATIVE_DESTINATION);
         }
 
-        long maxFileSize = settings.getLong("maxFileSize");
-        int maxNumberOfFiles = settings.getInt("maxNumberOfFiles");
+        long maxFileSize = 0;
+        try
+        {
+            maxFileSize = settings.getLong("maxFileSize");
+        }
+        catch (JSONException e) {}
+
+        int maxNumberOfFiles = 0;
+        try
+        {
+            maxNumberOfFiles = settings.getInt("maxNumberOfFiles");
+        }
+        catch (JSONException e) {}
 
         for(String loggerName : loggerArray)
         {

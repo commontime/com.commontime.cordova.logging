@@ -1,6 +1,6 @@
 {
   "name": "com.commontime.cordova.logging",
-  "version": "1.0.21",
+  "version": "1.0.22",
   "description": "Commontime cordova logging plugin.",
   "cordova": {
     "id": "com.commontime.cordova.logging",

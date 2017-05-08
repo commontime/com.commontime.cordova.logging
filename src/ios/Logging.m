@@ -72,6 +72,7 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
     if([self isFirstRun])
     {
         loggingEnabled = [[self.commandDelegate.settings objectForKey:[LOGGING_ENABLED_KEY lowercaseString]] boolValue];
+        [self putBoolInPrefs:LOGGING_ENABLED_KEY :loggingEnabled];
         
         clientRootLogLevel = [self.commandDelegate.settings objectForKey:[CLIENT_ROOT_LOG_LEVEL_KEY lowercaseString]];
         appRootLogLevel = [self.commandDelegate.settings objectForKey:[APP_ROOT_LOG_LEVEL_KEY lowercaseString]];
@@ -89,6 +90,7 @@ static NSString *const NATIVE_MAX_NUMBER_OF_LOG_FILES_KEY = @"nativeMaxNumberOfL
     else
     {
         loggingEnabled = [self getBoolFromPrefs:LOGGING_ENABLED_KEY];
+        
         appLoggingEnabled = [self getBoolFromPrefs:APP_LOGGING_ENABLED_KEY];
         clientLoggingEnabled = [self getBoolFromPrefs:CLIENT_LOGGING_ENABLED_KEY];
         nativeLoggingEnabled = [self getBoolFromPrefs:NATIVE_LOGGING_ENABLED_KEY];

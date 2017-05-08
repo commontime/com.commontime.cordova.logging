@@ -112,6 +112,7 @@ public class Logging extends CordovaPlugin {
         if(isFirstRun())
         {
             loggingEnabled = preferences.getBoolean(LOGGING_ENABLED_KEY, false);
+            putBooleanInPrefs(LOGGING_ENABLED_KEY, loggingEnabled);
 
             clientRootLogLevel = preferences.getString(CLIENT_ROOT_LOG_LEVEL_KEY, null);
             appRootLogLevel = preferences.getString(APP_ROOT_LOG_LEVEL_KEY, null);
@@ -128,7 +129,8 @@ public class Logging extends CordovaPlugin {
         }
         else
         {
-            loggingEnabled = getBooleanFromPrefs(LOGGING_ENABLED_KEY);
+            loggingEnabled = getBooleanFromPrefs(LOGGING_ENABLED_KEY);            
+
             appLoggingEnabled = getBooleanFromPrefs(APP_LOGGING_ENABLED_KEY);
             clientLoggingEnabled = getBooleanFromPrefs(CLIENT_LOGGING_ENABLED_KEY);
             nativeLoggingEnabled = getBooleanFromPrefs(NATIVE_LOGGING_ENABLED_KEY);

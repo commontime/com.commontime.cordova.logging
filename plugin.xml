@@ -30,8 +30,8 @@
     <source-file src="src/android/LoggingIOUtils.java" target-dir="src/com/commontime/plugin/"/>
     <source-file src="src/android/LoggingLineIterator.java" target-dir="src/com/commontime/plugin/"/>
 
-    <framework src="org.slf4j:slf4j-api:1.7.21" />
-    <framework src="com.github.tony19:logback-android:1.1.1-6" />
+    <framework src="org.slf4j:slf4j-api:1.7.25" />
+    <framework src="com.github.tony19:logback-android:1.1.1-11" />
 
   </platform>   
 
